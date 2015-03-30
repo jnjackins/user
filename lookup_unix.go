@@ -81,5 +81,5 @@ func lookupUnix(uid int, username string, lookupByName bool) (*User, error) {
 	if lookupByName {
 		return nil, UnknownUserError(username)
 	}
-	return UnkownUserIdError(uid)
+	return nil, UnknownUserIdError(uid)
 }
