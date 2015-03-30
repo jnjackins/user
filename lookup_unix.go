@@ -46,7 +46,7 @@ func lookupUnix(uid int, username string, lookupByName bool) (*User, error) {
 	if err != nil {
 		return nil, fmt.Errorf("user: %s", err)
 	}
-	if stat.ModTime() != passwdModTime || usersByID != nil {
+	if stat.ModTime() != passwdModTime || usersByID == nil {
 		if err := populateMaps(); err != nil {
 			return nil, fmt.Errorf("user: %s", err)
 		}
@@ -68,6 +68,8 @@ func lookupUnix(uid int, username string, lookupByName bool) (*User, error) {
 }
 
 func populateMaps() error {
+	usersByName = make(map[string]*User)
+	usersByID = make(map[string]*User)
 	f, err := os.Open("/etc/passwd")
 	if err != nil {
 		return err
