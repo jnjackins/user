@@ -78,5 +78,8 @@ func lookupUnix(uid int, username string, lookupByName bool) (*User, error) {
 	if scanner.Err() != nil {
 		return nil, fmt.Errorf("user: error reading from /etc/passwd: %s", err)
 	}
-	return nil, fmt.Errorf("user: user not found: %s", matchString)
+	if lookupByName {
+		return nil, UnknownUserError(username)
+	}
+	return UnkownUserIdError(uid)
 }
