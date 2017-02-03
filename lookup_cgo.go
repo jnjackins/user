@@ -96,8 +96,8 @@ func lookupUnix(uid int, username string, lookupByName bool) (*User, error) {
 		}
 	}
 	u := &User{
-		Uid:      strconv.Itoa(int(pwd.pw_uid)),
-		Gid:      strconv.Itoa(int(pwd.pw_gid)),
+		Uid:      int(pwd.pw_uid),
+		Gid:      int(pwd.pw_gid),
 		Username: C.GoString(pwd.pw_name),
 		Name:     C.GoString(pwd.pw_gecos),
 		HomeDir:  C.GoString(pwd.pw_dir),

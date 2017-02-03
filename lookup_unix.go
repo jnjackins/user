@@ -21,7 +21,7 @@ import (
 var (
 	passwdModTime time.Time
 	usersByName   map[string]*User
-	usersByID     map[string]*User
+	usersByID     map[int]*User
 )
 
 func current() (*User, error) {
@@ -59,7 +59,7 @@ func lookupUnix(uid int, username string, lookupByName bool) (*User, error) {
 			return nil, UnknownUserError(username)
 		}
 	} else {
-		if u, ok := usersByID[strconv.Itoa(uid)]; ok {
+		if u, ok := usersByID[uid]; ok {
 			return u, nil
 		} else {
 			return nil, UnknownUserIdError(uid)
@@ -69,7 +69,7 @@ func lookupUnix(uid int, username string, lookupByName bool) (*User, error) {
 
 func populateMaps() error {
 	usersByName = make(map[string]*User)
-	usersByID = make(map[string]*User)
+	usersByID = make(map[int]*User)
 	f, err := os.Open("/etc/passwd")
 	if err != nil {
 		return err
@@ -86,9 +86,17 @@ func populateMaps() error {
 		if len(fields) != 7 {
 			continue
 		}
+		uid, err := strconv.Atoi(fields[2])
+		if err != nil {
+			return err
+		}
+		gid, err := strconv.Atoi(fields[3])
+		if err != nil {
+			return err
+		}
 		u := &User{
-			Uid:      fields[2],
-			Gid:      fields[3],
+			Uid:      uid,
+			Gid:      gid,
 			Username: fields[0],
 			Name:     fields[4],
 			HomeDir:  fields[5],

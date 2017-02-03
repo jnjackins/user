@@ -19,8 +19,8 @@ var implemented = true // set to false by lookup_stubs.go's init
 // On Plan 9, Uid, Gid, Username, and Name will be the
 // contents of /dev/user.
 type User struct {
-	Uid      string // user id
-	Gid      string // primary group id
+	Uid      int // user id
+	Gid      int // primary group id
 	Username string
 	Name     string
 	HomeDir  string
