@@ -123,5 +123,5 @@ func (e *Entry) Authenticate(password string) bool {
 	if err != nil {
 		return false
 	}
-	return c.Verify(e.PasswordHash, []byte(pw)) == nil
+	return c.Verify(e.PasswordHash, []byte(password)) == nil
 }
